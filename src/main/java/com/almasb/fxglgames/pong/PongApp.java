@@ -212,14 +212,15 @@ public class PongApp extends GameApplication implements MessageHandler<String> {
     protected void onUpdate(double tpf) {
         if (!server.getConnections().isEmpty()) {
             //create and send game data message
-            var gdMessage = "GAME_DATA," + player1.getY() + "," + player2.getY() + "," + ball.getX() + "," + ball.getY() + "," + geti("player1score") + "," + geti("player2score");
+            var gdMessage = "GAME_DATA," + player1.getY() + "," + player2.getY() + "," + ball.getX() + "," + ball.getY() + "," + geti("player1score") + "," + geti("player2score") + "," + "END";
             server.broadcast(gdMessage);
 
-            //create and send the scores message
-
             //create and send connected players message
-            //var pMessage = "PLAYERS," + geti("player1Active") + "," + geti("player2Active");
-            //server.broadcast(pMessage);
+            var pMessage = "PLAYERS," + geti("player1Active") + "," + geti("player2Active");
+            server.broadcast(pMessage);
+
+            if(geti("player1Active") < 0) {set("player1Active",0);}
+            if(geti("player2Active") < 0) {set("player2Active",0);}
         } else {
             if(geti("player1Active") != 0) {set("player1Active",0);}
             if(geti("player2Active") != 0) {set("player2Active",0);}
